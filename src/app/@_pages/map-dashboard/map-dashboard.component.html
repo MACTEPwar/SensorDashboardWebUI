@@ -1,0 +1,119 @@
+<div class="container-fluid" style="height: calc(100% - 80px)">
+    <div class="row h-100">
+
+        <div class="col-12 h-100" style="position:relative">
+            <div class="card shadow mt-3 h-100">
+                <div class="card-header d-flex p-1" style="background-color:#000000c7;color:white">
+                    <button class="btn btn-success" (click)="toggleDeviceList();">Список устройств</button>
+                    <form class="form-inline mt-2 mr-2 mt-md-0 ml-auto mb-0" id="formFilterDate">
+                        <label class="mx-2"><span>От</span></label>
+                        <div class="form-group">
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="between" />
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="mx-2"><span>До</span></label>
+                        <div class="form-group">
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="to" />
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success my-2 ml-2" type="button" id="filterDate">Поиск</button>
+                    </form>
+                </div>
+                <!-- <div class="card-body" *ngIf="deviceService.selectedDevice !== null">
+                    <ng-container *ngFor="let s of deviceService.selectedDevice.sensors.filter(e=>{return e.sensor_id === 'position';})">
+                        {{1}}
+                    </ng-container>
+                </div> -->
+                <div class="card-body p-0 h-100">
+                    <div style="position: absolute;z-index: 1;background-color: white;right:0px;opacity: 0.8;" class="shadow rounded mt-1 mr-1" *ngIf="lastSensorData.length > 0">
+                        <div *ngFor="let d of lastSensorData">{{d.SensorId}}: {{d.Value}}</div>
+                    </div>
+                    <div *ngIf="deviceListIsVisible" style="position: absolute;z-index: 1;background-color: white;" class="shadow rounded mt-1">
+                        <div class="row m-0 p-0" style="background-color: #b0b1c1;">
+                            <div class="col">Название</div>
+                            <div class="col">Номер</div>
+                        </div>
+                        <div *ngFor="let device of deviceList;let num = index" class="listDevice__device p-0 m-0 row" [attr.data-serial]="device.serial" (click)="onSelectDevice(num)" #deviceList__device>
+                            <div class="col text-center">{{device.title}}</div>
+                            <div class="col text-center">{{device.serial}}</div>
+
+                        </div>
+                    </div>
+                    <agm-map [latitude]="48.4671" [longitude]="35.0163" [zoom]="8" style="width: 100%;height: 100%;" #agmMap>
+                        <!-- <ng-container *ngIf="deviceService.selectedDevice !== null">
+                            <agm-marker [latitude]="48.4671" [longitude]="35.0163" [label]="{text:deviceService.selectedDevice.title,fontSize: '20px',fontWeight: 'bold'}"></agm-marker>
+                        </ng-container> -->
+
+                        <ng-container *ngIf="deviceService.selectedDevice !== null && deviceService.selectedDevice.sensors !== null && deviceService.selectedDevice.sensors.length > 0">
+                            <agm-polyline [strokeColor]="'red'">
+                                <ng-container>
+                                    <ng-container *ngFor="let point of deviceService.selectedDevice | valuesFromDevice:'position'">
+
+                                        <agm-polyline-point [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
+
+                                    </ng-container>
+                                </ng-container>
+
+                            </agm-polyline>
+                        </ng-container>
+
+                        <ng-container *ngIf="lastMarkerPosition !== null">
+                            <agm-marker [latitude]="lastMarkerPosition.lat" [longitude]="lastMarkerPosition.lng"></agm-marker>
+                        </ng-container>
+
+                        <ng-container *ngFor="let t of lastPositions;let i = index">
+                            <ng-container *ngIf="deviceService.selectedDevice === null">
+                                <agm-marker [latitude]="t.position.lat" [longitude]="t.position.lng" [title]="t.title" [label]="{text:t.title,fontSize: '20px',fontWeight: 'bold'}" [openInfoWindow]="true" (markerClick)="onSelectDevice(i);" #device>
+                                </agm-marker>
+                            </ng-container>
+
+                        </ng-container>
+
+                        <!-- <agm-polyline [strokeColor]="'red'">
+                            <ng-container *ngIf="currentRoad !== null">
+                                <ng-container *ngFor="let point of currentRoad.positions">
+
+                                    <agm-polyline-point [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
+
+                                </ng-container>
+                            </ng-container>
+
+                        </agm-polyline> -->
+                    </agm-map>
+                    <div class="row m-0 w-100">
+                        <div class="col-12 px-0">
+                            <div class="row w-100 m-0 p-0" style="background-color:#000000c7">
+                                <div class="col-auto px-1 my-1">
+                                    <button class="btn btn-success" id="play">&#9658;</button>
+                                </div>
+                                <div class="col-auto px-1 my-1">
+                                    <button class="btn btn-danger" id="pause">&#9632;</button>
+                                </div>
+                                <div class="col px-1 my-auto mr-2">
+                                    <input type="range" class="w-100" min="0" step="1" [max]="countSteps" [value]="countSteps" id="rangeInputHistory" (input)="onChangeRangeHistory(inputRangeHistory.value)" #inputRangeHistory>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row" id="chart">
+        <div id="regions_div" style="width: 900px; height: 500px;"></div>
+
+    </div>
+    <h1>{{ title }}</h1> -->
+
+    <!-- this creates a google map on the page with the given lat/lng from -->
+    <!-- the component as the initial center of the map: -->
+
+</div>
