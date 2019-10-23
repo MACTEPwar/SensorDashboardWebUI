@@ -15,6 +15,7 @@ import { ConfirmModalComponent } from './@_components/modal-windows/confirm-moda
 import { MapDashboardComponent } from './@_pages/map-dashboard/map-dashboard.component';
 import { DefaultComponent } from './@_pages/default/default.component';
 import { ValuesFromDevicePipe } from './@_pipes/values-from-device.pipe';
+import { PosValueFromSensorsPipe } from './@_pipes/pos-value-from-sensors.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ValuesFromDevicePipe } from './@_pipes/values-from-device.pipe';
     DefaultComponent,
     AlertModalComponent,
     ConfirmModalComponent,
-    ValuesFromDevicePipe
+    ValuesFromDevicePipe,
+    PosValueFromSensorsPipe
   ],
   imports: [
     NgbModule,

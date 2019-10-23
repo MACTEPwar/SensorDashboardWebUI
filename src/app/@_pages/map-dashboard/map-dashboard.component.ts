@@ -17,9 +17,17 @@ export class MapDashboardComponent implements OnInit {
   deviceListIsVisible: boolean = false;
   deviceList: Array<any> = new Array<any>();
   countSteps: number = 0;
-  selectedDeviceSerial: string = null;
-  //lastMarkerPosition:{lat: string, lng: string} = null; 
-  lastSensorData: Array<Sensor> = new Array<Sensor>();
+  lastSensorData: Array<{
+    sensor_id:string,
+    value:string|number| { lat: number, lng: number },
+    measure:string,
+    description:string
+  }> = new Array<{
+    sensor_id:string,
+    value:string|number| { lat: number, lng: number },
+    measure:string,
+    description:string
+  }>();
   lastMarkerPosition = null;
 
   constructor(private deviceService: DeviceService, private api: ApiService) { }
@@ -39,6 +47,9 @@ export class MapDashboardComponent implements OnInit {
         this.deviceList.push(element)
       });
     });
+
+    // console.log(this.lastPositions);
+    // console.log(this.deviceList);
   }
 
   async onSelectDevice(device_id) {
@@ -56,11 +67,12 @@ export class MapDashboardComponent implements OnInit {
             device.sensors[0].values = values;
             this.deviceService.selectedDevice = device;
             this.countSteps = this.deviceService.selectedDevice.sensors.filter(f => f.type === "position")[0].values.length - 1;
+            this.getLastDataFromSensors(this.countSteps);
             // this.deviceService.getCountDataFromSensor(serial, "position").subscribe(res => {
             //   this.countSteps = res - 1;
             //   this.getLastDataFromSensors(this.countSteps);
             // });
-            console.log()
+            console.log(this.deviceService.selectedDevice)
           });
         });
       }
@@ -115,13 +127,21 @@ export class MapDashboardComponent implements OnInit {
     // });
     let finish_datetime = this.deviceService.selectedDevice.sensors.filter(f => f.type === "position")[0].values[indexPos].datetime;
        this.deviceService.getLastDataFromSensor(finish_datetime, this.deviceService.selectedDevice.serial).subscribe(result => {
-        //this.lastSensorData = [];
-        result.forEach(element => {
+        this.lastSensorData = [];
+        result.forEach((element:{
+          sensor_id:string,
+          value:string|number| { lat: number, lng: number },
+          measure:string,
+          description:string
+        }) => {
           //let sensor:Sensor = new Sensor()
-          this.deviceService.selectedDevice.sensors.push()
+          //this.deviceService.selectedDevice.sensors.push()
+          
+          this.lastSensorData.push(element);
         });
-        let temp_pos = this.lastSensorData.filter(de => de.SensorId === "position")[0].Values[0];
-        this.lastMarkerPosition = {lat: temp_pos[0], lng: temp_pos[1]};
+        //console.log(this.lastSensorData);
+        // let temp_pos = this.lastSensorData.filter(de => de.SensorId === "position")[0].Values[0];
+        // this.lastMarkerPosition = {lat: temp_pos[0], lng: temp_pos[1]};
         //console.log(this.lastSensorData.filter(de => de.SensorId === "position"));
       });
   }
