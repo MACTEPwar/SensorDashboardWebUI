@@ -25,3 +25,14 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## using Google Map
+
+1. Use `ng g module MapKey` for generate module of key map.
+2. Add in imports module: 
+
+    AgmCoreModule.forRoot({
+        apiKey: "YOUR_KEY"
+    })
+
+3. Paste your map key instead of the phrase `YOUR_KEY`.
