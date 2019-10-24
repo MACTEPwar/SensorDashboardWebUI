@@ -1,3 +1,4 @@
 {
-    "apiBaseUrl": "http://localhost:63005/"
+    "apiBaseUrl": "http://localhost:63005/",
+    "googleKey": "AIzaSyCxTk5Wvvoo4DUypKFQ1CyMSnCXJrXEm7I"
 }

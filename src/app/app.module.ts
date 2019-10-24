@@ -3,7 +3,6 @@ import { NgModule,APP_INITIALIZER } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from './@_modules/modal/modal.module';
 import { HttpClientModule } from '@angular/common/http';
-import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +15,7 @@ import { MapDashboardComponent } from './@_pages/map-dashboard/map-dashboard.com
 import { DefaultComponent } from './@_pages/default/default.component';
 import { ValuesFromDevicePipe } from './@_pipes/values-from-device.pipe';
 import { PosValueFromSensorsPipe } from './@_pipes/pos-value-from-sensors.pipe';
+import { MapKeyModule } from './map-key/map-key.module';
 
 @NgModule({
   declarations: [
@@ -33,9 +33,7 @@ import { PosValueFromSensorsPipe } from './@_pipes/pos-value-from-sensors.pipe';
     AppRoutingModule,
     ModalModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCxTk5Wvvoo4DUypKFQ1CyMSnCXJrXEm7I'
-    })
+    MapKeyModule
   ],
   providers: [
     {
