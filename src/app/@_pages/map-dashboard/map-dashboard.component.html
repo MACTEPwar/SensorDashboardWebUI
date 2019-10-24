@@ -33,23 +33,23 @@
                     </ng-container>
                 </div> -->
                 <div class="card-body p-0 h-100">
-                    <div style="position: absolute;z-index: 1;background-color: white;right:0px;opacity: 0.8;" class="shadow rounded mt-1 mr-1" *ngIf="lastSensorData.length > 0">
-                        <div *ngFor="let d of lastSensorData">{{d.description}}: {{d.value}}</div>
+                    <div style="position: absolute;z-index: 1;background-color: white;right:0px;opacity: 0.8;" class="shadow rounded mt-1 mr-1" *ngIf="deviceService.lastSensorData.length > 0">
+                        <div *ngFor="let d of deviceService.lastSensorData">{{d.description}}: {{d.value}}</div>
                     </div>
                     <div *ngIf="deviceListIsVisible" style="position: absolute;z-index: 1;background-color: white;" class="shadow rounded mt-1">
                         <div class="row m-0 p-0" style="background-color: #b0b1c1;">
                             <div class="col">Название</div>
                             <div class="col">Номер</div>
                         </div>
-                        <div *ngFor="let device of deviceList;let num = index" class="listDevice__device p-0 m-0 row" [attr.data-serial]="device.serial" (click)="onSelectDevice(num)" #deviceList__device>
+                        <div *ngFor="let device of deviceService.deviceList;let num = index" class="listDevice__device p-0 m-0 row" [attr.data-serial]="device.serial" (click)="onSelectDevice(num)" #deviceList__device>
                             <div class="col text-center">{{device.title}}</div>
                             <div class="col text-center">{{device.serial}}</div>
 
                         </div>
                     </div>
                     <agm-map [latitude]="48.4671" [longitude]="35.0163" [zoom]="8" style="width: 100%;height: 100%;" #agmMap>
-                        <ng-container *ngIf="lastSensorData.length > 0">
-                            <agm-marker [latitude]="lastSensorData | posValueFromSensors:0" [longitude]="lastSensorData | posValueFromSensors:1" [label]="{text:deviceService.selectedDevice.title,fontSize: '20px',fontWeight: 'bold'}"></agm-marker>
+                        <ng-container *ngIf="deviceService.lastSensorData.length > 0">
+                            <agm-marker [latitude]="deviceService.lastSensorData | posValueFromSensors:0" [longitude]="deviceService.lastSensorData | posValueFromSensors:1" [label]="{text:deviceService.selectedDevice.title,fontSize: '20px',fontWeight: 'bold'}"></agm-marker>
                         </ng-container>
 
                         <ng-container *ngIf="deviceService.selectedDevice !== null && deviceService.selectedDevice.sensors !== null && deviceService.selectedDevice.sensors.length > 0">
@@ -65,11 +65,11 @@
                             </agm-polyline>
                         </ng-container>
 
-                        <ng-container *ngIf="lastMarkerPosition !== null">
+                        <!-- <ng-container *ngIf="lastMarkerPosition !== null">
                             <agm-marker [latitude]="lastMarkerPosition.lat" [longitude]="lastMarkerPosition.lng"></agm-marker>
-                        </ng-container>
+                        </ng-container> -->
 
-                        <ng-container *ngFor="let t of lastPositions;let i = index">
+                        <ng-container *ngFor="let t of deviceService.lastPositions;let i = index">
                             <ng-container *ngIf="deviceService.selectedDevice === null">
                                 <agm-marker [latitude]="t.position.lat" [longitude]="t.position.lng" [title]="t.title" [label]="{text:t.title,fontSize: '20px',fontWeight: 'bold'}" [openInfoWindow]="true" (markerClick)="onSelectDevice(i);" #device>
                                 </agm-marker>
