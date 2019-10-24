@@ -24,7 +24,7 @@ export class DeviceService {
    * Получает последние позиции всех устройств их вермя, и записывает в lastPositions 
    */
   getLastPositions() {
-    this.apiService.SendComand<any>("api/devices/GetLastPositionFromDevices").subscribe(devices => {
+    this.apiService.SendRequest<any>("api/devices/GetLastPositionFromDevices").subscribe(devices => {
       devices.forEach(device => {
         this.lastPositions.push({ 
           title: device.valueid.slice(0, device.valueid.indexOf('.')), 
@@ -52,7 +52,7 @@ export class DeviceService {
    * Получает список всех устройств и сохраняет их в devices
    */
   getDeviceList() {
-    this.apiService.SendComand<any>("api/devices").subscribe(devices => {
+    this.apiService.SendRequest<any>("api/devices").subscribe(devices => {
       devices.forEach((device: Device) => {
         this.deviceList.push(device);
       });
@@ -69,7 +69,7 @@ export class DeviceService {
    */
   getLastDataFromSensors(indexPos: number) {
     let finish_datetime = this.selectedDevice.getValue().sensors.filter(f => f.type === "position")[0].values[indexPos].datetime;
-    this.apiService.SendComand<any>(`api/devices/GetLastDataFromSensors/${this.selectedDevice.getValue().serial}`, finish_datetime).subscribe(lastData => {
+    this.apiService.SendRequest<any>(`api/devices/GetLastDataFromSensors/${this.selectedDevice.getValue().serial}`, finish_datetime).subscribe(lastData => {
       this.lastSensorData = [];
       lastData.forEach((element: {
         sensor_id: string,
@@ -88,13 +88,13 @@ export class DeviceService {
    */
   selectDevice(device_id) {
     let serial = this.lastPositions[device_id].serial;
-    this.apiService.SendComand<Device>(`api/devices/test_get_devices/${serial}`).subscribe(
+    this.apiService.SendRequest<Device>(`api/devices/test_get_devices/${serial}`).subscribe(
       devices => {
         let device: Device = devices[0];
-        this.apiService.SendComand(`api/devices/test_get_sensors_for_device/${device.serial}/position`).subscribe((res: Sensor) => {
+        this.apiService.SendRequest(`api/devices/test_get_sensors_for_device/${device.serial}/position`).subscribe((res: Sensor) => {
           device.sensors = new Array<Sensor>();
           device.sensors.push(res[0]);
-          this.apiService.SendComand(`api/devices/test_get_data_for_sensor/${device.serial}`, device.sensors[0].sensor_id).subscribe((values: Array<DataOfSensor>) => {
+          this.apiService.SendRequest(`api/devices/test_get_data_for_sensor/${device.serial}`, device.sensors[0].sensor_id).subscribe((values: Array<DataOfSensor>) => {
             device.sensors[0].values = new Array<DataOfSensor>();
             device.sensors[0].values = values;
             this.selectedDevice.next(device);
