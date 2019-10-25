@@ -3,9 +3,12 @@ import { NgModule,APP_INITIALIZER } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from './@_modules/modal/modal.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NgxPopper } from 'angular-popper';
 
 import { AppConfigService } from './@_shared/app-config/app-config.service';
 
@@ -29,8 +32,11 @@ import { MapKeyModule } from './@_modules/map-key/map-key.module';
   ],
   imports: [
     NgbModule,
+    NgxPopper,
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    NgTempusdominusBootstrapModule,
     ModalModule,
     HttpClientModule,
     MapKeyModule

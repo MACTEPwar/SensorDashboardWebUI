@@ -11,7 +11,12 @@ export class MapDashboardComponent implements OnInit {
 
   deviceListIsVisible: boolean = false;
   countSteps: number = 0;
-
+  dateFilterStart = new Date("1.1.2000");
+  dateFilterFinish = new Date();
+  dateFilterOptions = {
+    locale: "ru"
+  };
+  
   constructor(private deviceService: DeviceService) { 
     this.deviceService.selectedDevice.subscribe(selectedDevice => {
       if (selectedDevice){

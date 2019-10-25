@@ -7,7 +7,7 @@ export class SensorData implements ISensorData {
     sensor_id: string;
     value: string | number | Point;
     measure: string;
-    description: string
+    description: string;
 
     /**
      * Создает новый объект информации с датчика

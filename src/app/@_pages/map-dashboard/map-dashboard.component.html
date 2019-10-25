@@ -1,43 +1,90 @@
-<div class="container-fluid" style="height: calc(100% - 80px)">
-    <div class="row h-100">
-        <div class="col-12 h-100" style="position:relative">
-            <div class="card shadow mt-3 h-100">
+<div class="container-fluid" style="height: calc(100% - 58px)">
+    <div class="row h-100 mx-1">
+        <div class="col-2 h-100" style="position:relative">
+            <div class="row" style=" height: calc(100% - 15px)">
+                <div class="col-12">
+                    <div class="row" style=" height: 50%">
+                        <div class="card mt-3 w-100" style="box-shadow: 2px 4px 9px 2px #00000087">
+                            <div class="card-header d-flex p-1" style="background-color:#000000c7;color:white">
+                                <span>Фильтры</span>
+                            </div>
+                            <div class="card-body d-flex">
+                                <div class="col-12 p-0">
+                                    <div class="row w-100 mx-0">
+                                        <span>Устройство:</span>
+                                        <div class="dropdown w-100">
+                                            <button class="w-100 btn btn-standart dropdown-toggle border" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{deviceService.selectedDevice.getValue() === null ? 'Не выбрано' : deviceService.selectedDevice.getValue().title }}
+                                            </button>
+                                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu2" style="max-height: 300px;overflow-y: scroll;">
+                                                <button class="dropdown-item" type="button">
+                                                    <div class="row">
+                                                            <div class="col">
+                                                                Название
+                                                            </div>
+                                                            <div class="col">
+                                                                Номер
+                                                            </div>
+                                                    </div>
+                                                        
+                                                </button>
+                                                <button *ngFor="let device of deviceService.deviceList;let num = index" (click)="onSelectDevice(num)" class="dropdown-item" type="button">
+                                                    <div class="row">
+                                                            <div class="col text-center">{{device.title}}</div>
+                                                            <div class="col text-center">{{device.serial}}</div>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span>От:</span>
+                                        <div class="form-group">
+                                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                                <input [(ngModel)]="dateFilterStart" [options]="dateFilterOptions" NgTempusdominusBootstrapInput type="text" class="form-control" />
+                                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span>До:</span>
+                                        <div class="form-group">
+                                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                                <input [(ngModel)]="dateFilterFinish" [options]="dateFilterOptions" NgTempusdominusBootstrapInput type="text" class="form-control" />
+                                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-success btn-block">Сформировать</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style=" height: 50%">
+                        <div class="card mt-3 w-100" style="box-shadow: 2px 4px 9px 2px #00000087">
+                            <div class="card-header d-flex p-1" style="background-color:#000000c7;color:white">
+                                <span>Показатели</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8" style="position:relative;height: calc(100% - 77px)">
+            <div class="card mt-3 h-100" style="box-shadow: 2px 4px 9px 2px #00000087">
                 <div class="card-header d-flex p-1" style="background-color:#000000c7;color:white">
-                    <button class="btn btn-success" (click)="toggleDeviceList();">Список устройств</button>
-                    <form class="form-inline mt-2 mr-2 mt-md-0 ml-auto mb-0" id="formFilterDate">
-                        <label class="mx-2"><span>От</span></label>
-                        <div class="form-group">
-                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="between" />
-                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <label class="mx-2"><span>До</span></label>
-                        <div class="form-group">
-                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="to" />
-                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-success my-2 ml-2" type="button" id="filterDate">Поиск</button>
-                    </form>
+                    Карта
                 </div>
                 <div class="card-body p-0 h-100">
                     <div style="position: absolute;z-index: 1;background-color: white;right:0px;opacity: 0.8;" class="shadow rounded mt-1 mr-1" *ngIf="deviceService.lastSensorData.length > 0">
-                        <div *ngFor="let d of deviceService.lastSensorData">{{d.description}}: {{d.value}}</div>
-                    </div>
-                    <div *ngIf="deviceListIsVisible" style="position: absolute;z-index: 1;background-color: white;" class="shadow rounded mt-1">
-                        <div class="row m-0 p-0" style="background-color: #b0b1c1;">
-                            <div class="col">Название</div>
-                            <div class="col">Номер</div>
-                        </div>
-                        <div *ngFor="let device of deviceService.deviceList;let num = index" class="listDevice__device p-0 m-0 row" [attr.data-serial]="device.serial" (click)="onSelectDevice(num)" #deviceList__device>
-                            <div class="col text-center">{{device.title}}</div>
-                            <div class="col text-center">{{device.serial}}</div>
+                        <div *ngFor="let d of deviceService.lastSensorData">
+                            <div class="row m-0 p-0 my-1">
+                                <div class="col-auto my-auto">{{d.description}}</div>
+                                <div class="col my-auto">{{d.value}} {{d.measure}}</div>
+                                <div class="col-auto"><a href="#" class="btn btn-primary">Подробнее</a></div>
+                            </div>
+
                         </div>
                     </div>
                     <agm-map [latitude]="48.4671" [longitude]="35.0163" [zoom]="8" style="width: 100%;height: 100%;" #agmMap>
@@ -62,7 +109,7 @@
                             </ng-container>
                         </ng-container>
                     </agm-map>
-                    <div class="row m-0 w-100">
+                    <div class="row m-0 w-100" style="box-shadow: 2px 4px 9px 2px #00000087">
                         <div class="col-12 px-0">
                             <div class="row w-100 m-0 p-0" style="background-color:#000000c7">
                                 <div class="col-auto px-1 my-1">
@@ -76,6 +123,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 h-100" style="position:relative">
+            <div class="row" style=" height: calc(100% - 15px)">
+                <div class="card mt-3 w-100" style="box-shadow: 2px 4px 9px 2px #00000087">
+                    <div class="card-header d-flex p-1" style="background-color:#000000c7;color:white">
+                        <span>События</span>
                     </div>
                 </div>
             </div>
