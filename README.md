@@ -28,11 +28,27 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## using Google Map
 
-1. Use `ng g module MapKey` for generate module of key map.
+1. Use `ng g module ./@_modules/MapKey` for generate module of key map.
 2. Add in imports module: 
+    ```typescript
+    import { NgModule } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { AgmCoreModule } from '@agm/core';
 
-    AgmCoreModule.forRoot({
+
+    @NgModule({
+    declarations: [],
+    imports: [
+        CommonModule,
+        AgmCoreModule.forRoot({
         apiKey: "YOUR_KEY"
+        })
+    ],
+    exports:[
+        AgmCoreModule
+    ]
     })
+    export class MapKeyModule { }
+    ```
 
 3. Paste your map key instead of the phrase `YOUR_KEY`.

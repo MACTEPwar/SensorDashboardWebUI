@@ -15,7 +15,7 @@ import { MapDashboardComponent } from './@_pages/map-dashboard/map-dashboard.com
 import { DefaultComponent } from './@_pages/default/default.component';
 import { ValuesFromDevicePipe } from './@_pipes/values-from-device.pipe';
 import { PosValueFromSensorsPipe } from './@_pipes/pos-value-from-sensors.pipe';
-import { MapKeyModule } from './map-key/map-key.module';
+import { MapKeyModule } from './@_modules/map-key/map-key.module';
 
 @NgModule({
   declarations: [
